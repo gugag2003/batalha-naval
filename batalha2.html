@@ -2,11 +2,19 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css">
+        <style>
+            #messageDiv {
+                text-align: center;
+                position: top;
+            }
+        </style>
         <title>Batalha Naval</title>
     </head>
+
     <body>
         <table width=400px border="1" cellpadding=0 cellspacing=0 align=center>
             <script language="JavaScript">
+
                 for(i=0; i<8; i++) {
                     document.write("<tr>")
                     for(j=0; j<12; j++) {
@@ -83,10 +91,29 @@
                 
                 const ship = document.getElementById(`ship${indX}${indY}`);
                 const type = ships[indX][indY];
+
+                if (type === 0) {
+                    displayMessage("Você acertou a água!");
+                } else if (type === 1) {
+                    displayMessage("Você acertou um submarino!");
+                } else if (type === 2) {
+                    displayMessage("Você acertou um navio!");
+                } else if (type === 3) {
+                    displayMessage("Você acertou um navio de guerra!");
+                }
+
                 ship.src = getImage(type);
                 update_scoreboard(type);
             }
-            
+
+            let messageDiv = document.createElement("div");
+            messageDiv.id = "messageDiv";
+            document.body.appendChild(messageDiv);
+
+            function displayMessage(message) {
+                messageDiv.innerHTML = message;
+            }
+
             function getImage(type) {
                 switch (type) {
                     case 0:
