@@ -17,6 +17,11 @@
             </script>
             <tr>
                 <td colspan="12" style="text-align: center"><div id="divScoreboard">Pontos: 0 - Vidas: 3</div>
+
+                <input type="radio" name="lives" value="3" id="lives3" checked> 3 Vidas
+                <input type="radio" name="lives" value="5" id="lives5"> 5 Vidas
+                <input type="radio" name="lives" value="7" id="lives7"> 7 Vidas
+
                 <button id="startButton" onclick="startGame()">Start</button>
                 <button id="restartButton" onclick="restartGame()" style="display: none;">Restart</button>
                 </td>
@@ -26,21 +31,33 @@
             
             let gameStarted = false;
 
-            function startGame() {
-            if (!gameStarted) {
-                gameStarted = true;
-                document.getElementById("startButton").style.display = 'none';
-                document.getElementById("restartButton").style.display = 'none';
-                resetGame();
-                update_scoreboard_view();
-            }
-        }
-        function restartGame() {
-            document.getElementById("startButton").style.display = 'none';
-            document.getElementById("restartButton").style.display = 'none';
-            resetGame();
-            update_scoreboard_view();
-        }
+function startGame() {
+    if (!gameStarted) {
+        gameStarted = true;
+        const selectedLives = document.querySelector('input[name="lives"]:checked').value;
+        life = parseInt(selectedLives);
+        
+        document.querySelectorAll('input[name="lives"]').forEach(radio => {
+            radio.disabled = true;
+        });
+
+        document.getElementById("startButton").style.display = 'none';
+        document.getElementById("restartButton").style.display = 'none';
+        resetGame();
+        update_scoreboard_view();
+    }
+}
+
+function restartGame() {
+    document.getElementById("startButton").style.display = 'none';
+    document.getElementById("restartButton").style.display = 'none';
+    // Reabilitar os radio buttons
+    document.querySelectorAll('input[name="lives"]').forEach(radio => {
+        radio.disabled = false;
+    });
+    resetGame();
+    update_scoreboard_view();
+}
             
             const ships = [
                     [0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0],
@@ -57,12 +74,13 @@
             let endGame;
             
             function resetGame() {
+    const selectedLives = document.querySelector('input[name="lives"]:checked').value;
+    life = parseInt(selectedLives);
+    points = 0;
+    endGame = false;
+    shuffle();
+}
 
-                life = 5;
-                points = 0;
-                endGame = false;
-                shuffle();
-            }
             
             function shuffle() {
                 
@@ -127,8 +145,8 @@
                 const scoreboard = document.getElementById("divScoreboard");
                 scoreboard.innerHTML = "Pontos: " + points + " - Vidas: " + life;
             }
+
             
-            resetGame();
         </script>
 
     </body>
